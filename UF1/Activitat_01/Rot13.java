@@ -2,6 +2,7 @@ package UF1.Activitat_01;
 /* 
  *Programa que es un codificador de xifrat de Cesar 13
  * Si se entra en texto("Hola") tiene que permanecer la may. y el min. del texto
+ * Se reccorre el array y despues se compara con los arryas para saber si es mayuscula o minuscula
  */
 
 public class Rot13 {
@@ -34,6 +35,7 @@ public class Rot13 {
         return lista;
     }
 
+    /* No se ha utilizado de momento, leer la actividad */
     public static char[] pasaAChar(String texto){
         char[] cadena = new char[texto.length()];
         for(int i=0; i < texto.length(); i++){
