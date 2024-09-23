@@ -6,11 +6,13 @@ package UF1.Activitat_01;
  */
 
 public class Rot13 {
-    public static final char[] may = {'A','B','C','D'};
-    public static final char[] min = {'a','b','c','d'};
+    public static final char[] may = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z','À','È','É','Í','Ò','Ó','Ú'};
+    public static final char[] min = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z','à','è','é','í','ò','ó','ú'};
 
     public static void main(String[] args) {
-        
+        // Ejemplo de prueba
+        String text = "Hola";
+        xifraRot13(pasaAChar(text));
     }
 
     public static char[] xifraRot13(char[] lista){
@@ -35,7 +37,7 @@ public class Rot13 {
         return lista;
     }
 
-    /* No se ha utilizado de momento, leer la actividad */
+    /* Pasar un String a un array de char */
     public static char[] pasaAChar(String texto){
         char[] cadena = new char[texto.length()];
         for(int i=0; i < texto.length(); i++){
@@ -44,6 +46,7 @@ public class Rot13 {
         return cadena;
     }
 
+    /* Pasar de un array de char a un String */
     public static String charToString(char[] cadena){
         String texto = "";
         for(int i=0; i < cadena.length; i++){
