@@ -1,29 +1,34 @@
 package UF1.Activitat_01;
 
+import java.util.Scanner;
+
 /* 
  * Programa que es un codificador y descodificador de cifrado César 13 (ROT13).
  */
 
 public class Rot13 {
     // Arrays con las letras del alfabeto
-    public static final char[] may = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z','À','È','É','Í','Ò','Ó','Ú'};
-    public static final char[] min = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z','à','è','é','í','ò','ó','ú'};
+    public static final char[] may = {'A','B','C','Ç','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z','À','È','É','Í','Ò','Ó','Ú'};
+    public static final char[] min = {'a','b','c','ç','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z','à','è','é','í','ò','ó','ú'};
 
     public static void main(String[] args) {
-        // Ejemplo de prueba
-        String text = "Hola Mundo";
+        Scanner sc = new Scanner(System.in);
+        String text = sc.nextLine();
         
         // Cifrar
-        String cifrado = charToString(xifraRot13(pasaAChar(text)));
+        String cifrado = xifraRot13(pasaAChar(text));
         System.out.println("Texto cifrado: " + cifrado);
         
         // Descifrar
-        String descifrado = charToString(desxifraRot13(pasaAChar(cifrado)));
+        String descifrado = desxifraRot13(pasaAChar(cifrado));
         System.out.println("Texto descifrado: " + descifrado);
+
+        sc.close(); 
     }
 
     // Función para cifrar usando ROT13
-    public static char[] xifraRot13(char[] lista) {
+    public static String xifraRot13(char[] lista) {
+        
         // Recorre la lista de caracteres y cifra
         for (int i = 0; i < lista.length; i++) {
             char letraActual = lista[i];
@@ -46,11 +51,12 @@ public class Rot13 {
                 }
             }
         }
-        return lista;
+
+        return charToString(lista);
     }
 
-    // Función para descifrar usando ROT13 (en este caso es lo mismo que cifrar)
-    public static char[] desxifraRot13(char[] lista) {
+    // Función para descifrar usando ROT13
+    public static String desxifraRot13(char[] lista) {
         // Recorre la lista de caracteres y descifra
         for (int i = 0; i < lista.length; i++) {
             char letraActual = lista[i];
@@ -73,7 +79,7 @@ public class Rot13 {
                 }
             }
         }
-        return lista;
+        return charToString(lista);
     }
 
     /* Pasar un String a un array de char */
