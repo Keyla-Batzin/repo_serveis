@@ -17,8 +17,6 @@ public class Rot13 {
         
         String textoPrueba = "Hola :D";
 
-
-
         // Cifrar
         String cifrado = xifraRot13(pasaAChar(textoPrueba));
         System.out.println("Texto cifrado: " + cifrado);
