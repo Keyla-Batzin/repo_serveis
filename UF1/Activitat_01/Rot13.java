@@ -1,7 +1,5 @@
 package UF1.Activitat_01;
 
-import java.util.Scanner;
-
 /*
  * Programa que es un codificador y descodificador de cifrado César 13 (ROT13).
  */
@@ -12,18 +10,24 @@ public class Rot13 {
     public static final char[] min = {'a','b','c','ç','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z','à','è','é','í','ò','ó','ú'};
 
     public static void main(String[] args) {
+        /*
         Scanner sc = new Scanner(System.in);
         String text = sc.nextLine();
+        */
         
+        String textoPrueba = "Ñ";
+
         // Cifrar
-        String cifrado = xifraRot13(pasaAChar(text));
+        String cifrado = xifraRot13(pasaAChar(textoPrueba));
         System.out.println("Texto cifrado: " + cifrado);
         
         // Descifrar
         String descifrado = desxifraRot13(pasaAChar(cifrado));
         System.out.println("Texto descifrado: " + descifrado);
 
-        sc.close(); 
+        /*
+        sc.close();
+        */
     }
 
     // Función para cifrar usando ROT13
@@ -65,7 +69,7 @@ public class Rot13 {
             for (int y = 0; y < may.length; y++) {
                 if (letraActual == may[y]) {
                     // Aplica la rotación inversa de 13 posiciones para mayúsculas
-                    lista[i] = may[(y + 13) % may.length];
+                    lista[i] = may[(y - 13) % may.length];
                     break;
                 }
             }
@@ -74,7 +78,7 @@ public class Rot13 {
             for (int y = 0; y < min.length; y++) {
                 if (letraActual == min[y]) {
                     // Aplica la rotación inversa de 13 posiciones para minúsculas
-                    lista[i] = min[(y + 13) % min.length];
+                    lista[i] = min[(y - 13) % min.length];
                     break;
                 }
             }
