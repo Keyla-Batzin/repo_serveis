@@ -6,8 +6,8 @@ package UF1.Activitat_01;
 
 public class Rot13 {
     // Arrays con las letras del alfabeto
-    public static final char[] may = {'A','B','C','Ç','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z','À','È','É','Í','Ò','Ó','Ú'};
-    public static final char[] min = {'a','b','c','ç','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z','à','è','é','í','ò','ó','ú'};
+    public static final char[] MAY = {'A','B','C','Ç','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z','À','È','É','Í','Ò','Ó','Ú'};
+    public static final char[] MIN = {'a','b','c','ç','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z','à','è','é','í','ò','ó','ú'};
 
     public static void main(String[] args) {
         /*
@@ -37,20 +37,20 @@ public class Rot13 {
         for (int i = 0; i < lista.length; i++) {
             char letraActual = lista[i];
 
-            // Comprobar si es mayúscula
-            for (int y = 0; y < may.length; y++) {
-                if (letraActual == may[y]) {
-                    // Aplica la rotación de 13 posiciones para mayúsculas
-                    lista[i] = may[(y + 13) % may.length];
+            // Comprobar si es MAYúscula
+            for (int y = 0; y < MAY.length; y++) {
+                if (letraActual == MAY[y]) {
+                    // Aplica la rotación de 13 posiciones para MAYúsculas
+                    lista[i] = MAY[(y + 13) % MAY.length];
                     break;
                 }
             }
 
-            // Comprobar si es minúscula
-            for (int y = 0; y < min.length; y++) {
-                if (letraActual == min[y]) {
-                    // Aplica la rotación de 13 posiciones para minúsculas
-                    lista[i] = min[(y + 13) % min.length];
+            // Comprobar si es MINúscula
+            for (int y = 0; y < MIN.length; y++) {
+                if (letraActual == MIN[y]) {
+                    // Aplica la rotación de 13 posiciones para MINúsculas
+                    lista[i] = MIN[(y + 13) % MIN.length];
                     break;
                 }
             }
@@ -65,20 +65,20 @@ public class Rot13 {
         for (int i = 0; i < lista.length; i++) {
             char letraActual = lista[i];
 
-            // Comprobar si es mayúscula
-            for (int y = 0; y < may.length; y++) {
-                if (letraActual == may[y]) {
-                    // Aplica la rotación inversa de 13 posiciones para mayúsculas
-                    lista[i] = may[(y - 13) % may.length];
+            // Comprobar si es MAYúscula
+            for (int y = 0; y < MAY.length; y++) {
+                if (letraActual == MAY[y]) {
+                    // Aplica la rotación inversa de 13 posiciones para MAYúsculas
+                    lista[i] = MAY[(y - 13) % MAY.length];
                     break;
                 }
             }
 
-            // Comprobar si es minúscula
-            for (int y = 0; y < min.length; y++) {
-                if (letraActual == min[y]) {
-                    // Aplica la rotación inversa de 13 posiciones para minúsculas
-                    lista[i] = min[(y - 13) % min.length];
+            // Comprobar si es MINúscula
+            for (int y = 0; y < MIN.length; y++) {
+                if (letraActual == MIN[y]) {
+                    // Aplica la rotación inversa de 13 posiciones para MINúsculas
+                    lista[i] = MIN[(y - 13) % MIN.length];
                     break;
                 }
             }
