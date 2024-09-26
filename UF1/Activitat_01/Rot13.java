@@ -15,7 +15,7 @@ public class Rot13 {
         String text = sc.nextLine();
         */
         
-        String textoPrueba = "Ñ";
+        String textoPrueba = "Hola :D";
 
 
 
