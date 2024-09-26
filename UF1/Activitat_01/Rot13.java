@@ -10,29 +10,25 @@ public class Rot13 {
     public static final char[] MIN = {'a','b','c','ç','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z','à','è','é','í','ò','ó','ú'};
 
     public static void main(String[] args) {
-        /*
-        Scanner sc = new Scanner(System.in);
-        String text = sc.nextLine();
-        */
-        
-        String textoPrueba = "Hola :D";
+        String texto = "Hola :D";
+        String texto1 = "Ñoquis";
+        String texto2 = "ãó";
 
         // Cifrar
-        String cifrado = xifraRot13(pasaAChar(textoPrueba));
-        System.out.println("Texto cifrado: " + cifrado);
-        
+        String cifrado = xifraRot13(pasaAChar(texto));
+        String cifrado1 = xifraRot13(pasaAChar(texto1));
+        String cifrado2 = xifraRot13(pasaAChar(texto2));
+        System.out.println("Texto cifrado: " + cifrado + "\n" + cifrado1 + "\n" + cifrado2);
+
         // Descifrar
         String descifrado = desxifraRot13(pasaAChar(cifrado));
-        System.out.println("Texto descifrado: " + descifrado);
-
-        /*
-        sc.close();
-        */
+        String descifrado1 = desxifraRot13(pasaAChar(cifrado1));
+        String descifrado2 = desxifraRot13(pasaAChar(cifrado2));
+        System.out.println("Texto descifrado: " + descifrado + "\n" + descifrado1 + "\n" + descifrado2);
     }
 
     // Función para cifrar usando ROT13
     public static String xifraRot13(char[] lista) {
-        
         // Recorre la lista de caracteres y cifra
         for (int i = 0; i < lista.length; i++) {
             char letraActual = lista[i];
@@ -40,7 +36,6 @@ public class Rot13 {
             // Comprobar si es MAYúscula
             for (int y = 0; y < MAY.length; y++) {
                 if (letraActual == MAY[y]) {
-                    // Aplica la rotación de 13 posiciones para MAYúsculas
                     lista[i] = MAY[(y + 13) % MAY.length];
                     break;
                 }
@@ -49,7 +44,6 @@ public class Rot13 {
             // Comprobar si es MINúscula
             for (int y = 0; y < MIN.length; y++) {
                 if (letraActual == MIN[y]) {
-                    // Aplica la rotación de 13 posiciones para MINúsculas
                     lista[i] = MIN[(y + 13) % MIN.length];
                     break;
                 }
@@ -68,8 +62,8 @@ public class Rot13 {
             // Comprobar si es MAYúscula
             for (int y = 0; y < MAY.length; y++) {
                 if (letraActual == MAY[y]) {
-                    // Aplica la rotación inversa de 13 posiciones para MAYúsculas
-                    lista[i] = MAY[(y - 13) % MAY.length];
+                    int nuevaPos = (y - 13 + MAY.length) % MAY.length;  // Ajuste para evitar valores negativos
+                    lista[i] = MAY[nuevaPos];
                     break;
                 }
             }
@@ -77,12 +71,13 @@ public class Rot13 {
             // Comprobar si es MINúscula
             for (int y = 0; y < MIN.length; y++) {
                 if (letraActual == MIN[y]) {
-                    // Aplica la rotación inversa de 13 posiciones para MINúsculas
-                    lista[i] = MIN[(y - 13) % MIN.length];
+                    int nuevaPos = (y - 13 + MIN.length) % MIN.length;  // Ajuste para evitar valores negativos
+                    lista[i] = MIN[nuevaPos];
                     break;
                 }
             }
         }
+
         return charToString(lista);
     }
 
