@@ -18,4 +18,8 @@ public class RotX {
     public static void forcaBrutaRotX(String cadenaXifrada){
 
     }
+
+    public static void main(String[] args){
+        
+    }
 }
