@@ -62,7 +62,7 @@ public class Rot13 {
             // Comprobar si es MAYúscula
             for (int y = 0; y < MAY.length; y++) {
                 if (letraActual == MAY[y]) {
-                    int nuevaPos = (y - 13 + MAY.length) % MAY.length;  // Ajuste para evitar valores negativos
+                    int nuevaPos = (y - 13 + MAY.length) % MAY.length;
                     lista[i] = MAY[nuevaPos];
                     break;
                 }
@@ -71,7 +71,7 @@ public class Rot13 {
             // Comprobar si es MINúscula
             for (int y = 0; y < MIN.length; y++) {
                 if (letraActual == MIN[y]) {
-                    int nuevaPos = (y - 13 + MIN.length) % MIN.length;  // Ajuste para evitar valores negativos
+                    int nuevaPos = (y - 13 + MIN.length) % MIN.length;
                     lista[i] = MIN[nuevaPos];
                     break;
                 }
