@@ -17,6 +17,8 @@ public class Rot13 {
         
         String textoPrueba = "Ñ";
 
+
+
         // Cifrar
         String cifrado = xifraRot13(pasaAChar(textoPrueba));
         System.out.println("Texto cifrado: " + cifrado);
@@ -42,7 +44,7 @@ public class Rot13 {
                 if (letraActual == may[y]) {
                     // Aplica la rotación de 13 posiciones para mayúsculas
                     lista[i] = may[(y + 13) % may.length];
-                    break; // No es necesario seguir buscando después de encontrar la letra
+                    break;
                 }
             }
 
