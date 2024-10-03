@@ -22,39 +22,30 @@ public class Monoalfabetic {
 
     //Metode que xifrara
     public static String xifraMonoAlfa(String cadena){
-        StringBuilder resultado = new StringBuilder();
-        for(int i=0; i < cadena.length(); i++){
-            char letraAct = cadena.charAt(i);
-            if(Character.isLowerCase(letraAct)){
-                letraAct = Character.toUpperCase(letraAct);
-                letraAct = posicion(letraAct);
-                letraAct = Character.toLowerCase(letraAct);
-                resultado.append(letraAct);
-            }else if(Character.isUpperCase(letraAct)){
-                letraAct = posicion(letraAct);
-                resultado.append(letraAct);
-            }else{
-                resultado.append(letraAct);
-            }
-        }
-        return resultado.toString();
+        return procesa(cadena, true);
     }
 
     //Metode que desxifrara
     public static String desxifraMonoAlfa(String cadena){
+        return procesa(cadena, false);
+    }
+
+    public static String procesa(String cadena, boolean x){
         StringBuilder resultado = new StringBuilder();
         for(int i=0; i < cadena.length(); i++){
-            char letraAct = cadena.charAt(i);
-            if(Character.isLowerCase(letraAct)){
-                letraAct = Character.toUpperCase(letraAct);
-                letraAct = desPosicion(letraAct);
-                letraAct = Character.toLowerCase(letraAct);
-                resultado.append(letraAct);
-            }else if(Character.isUpperCase(letraAct)){
-                letraAct = desPosicion(letraAct);
-                resultado.append(letraAct);
+            char l = cadena.charAt(i); //Letra
+            if(!Character.isLetter(l)){
+                resultado.append(l);
             }else{
-                resultado.append(letraAct);
+                if(Character.isLowerCase(l)){
+                    l = Character.toUpperCase(l);
+                    l = verifica(x, l);
+                    l = Character.toLowerCase(l);
+                    resultado.append(l);
+                }else if(Character.isUpperCase(l)){
+                    l = verifica(x, l);
+                    resultado.append(l);
+                }
             }
         }
         return resultado.toString();
@@ -69,27 +60,19 @@ public class Monoalfabetic {
         return list;
     }
 
-    //Es para saber que letra ira en el cifrado
     // Busca la posicion en el alfabeto MAY y despues busca la misma posicion el el alfabeto Random
-    public static char posicion(char letra){
+    public static char posicion(char letra, char[] dicionario, char[] otroDicionario){
         int posicion = 0;
-        for(int i=0; i < MAY.length; i++){
-            if(letra == MAY[i]){
+        for(int i=0; i < dicionario.length; i++){
+            if(letra == dicionario[i]){
                 posicion = i;
             }
         }
-        return RANDOM[posicion];
+        return otroDicionario[posicion];
     }
 
-    //Metodo para descifrar.
-    public static char desPosicion(char letra){
-        int posicion = 0;
-        for(int i=0; i < RANDOM.length; i++){
-            if(letra == RANDOM[i]){
-                posicion = i;
-            }
-        }
-        return MAY[posicion];
+    public static char verifica(boolean x, char l){
+        return (x) ? posicion(l,MAY,RANDOM) : posicion(l,RANDOM,MAY);
     }
 
     public static void main(String[] args) {
