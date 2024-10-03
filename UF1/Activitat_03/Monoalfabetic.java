@@ -30,8 +30,10 @@ public class Monoalfabetic {
                 letraAct = posicion(letraAct);
                 letraAct = Character.toLowerCase(letraAct);
                 resultado.append(letraAct);
-            }else{
+            }else if(Character.isUpperCase(letraAct)){
                 letraAct = posicion(letraAct);
+                resultado.append(letraAct);
+            }else{
                 resultado.append(letraAct);
             }
         }
@@ -39,7 +41,24 @@ public class Monoalfabetic {
     }
 
     //Metode que desxifrara
-    //public static String desxifraMonoAlfa(String cadena){}
+    public static String desxifraMonoAlfa(String cadena){
+        StringBuilder resultado = new StringBuilder();
+        for(int i=0; i < cadena.length(); i++){
+            char letraAct = cadena.charAt(i);
+            if(Character.isLowerCase(letraAct)){
+                letraAct = Character.toUpperCase(letraAct);
+                letraAct = desPosicion(letraAct);
+                letraAct = Character.toLowerCase(letraAct);
+                resultado.append(letraAct);
+            }else if(Character.isUpperCase(letraAct)){
+                letraAct = desPosicion(letraAct);
+                resultado.append(letraAct);
+            }else{
+                resultado.append(letraAct);
+            }
+        }
+        return resultado.toString();
+    }
 
     //Metodo que añade las letras del alfabeto MAY a un ArrayList<Character>
     public static ArrayList<Character> anadirLetras(char[] alfabeto){
@@ -62,9 +81,24 @@ public class Monoalfabetic {
         return RANDOM[posicion];
     }
 
+    //Metodo para descifrar.
+    public static char desPosicion(char letra){
+        int posicion = 0;
+        for(int i=0; i < RANDOM.length; i++){
+            if(letra == RANDOM[i]){
+                posicion = i;
+            }
+        }
+        return MAY[posicion];
+    }
+
     public static void main(String[] args) {
-        String prueba1 = "Hola me llamo Keyla :3";
+        permutaAlfabet(MAY, RANDOM);
+        String prueba1 = "Hola me llamo Keyla";
         System.out.println("Texto normal: " + prueba1);
-        System.out.println("Texto cifrado" + xifraMonoAlfa(prueba1));
+        String cifrado = xifraMonoAlfa(prueba1);
+        System.out.println("Texto cifrado: " + cifrado);
+        String descifrado = desxifraMonoAlfa(cifrado);
+        System.out.println("Texto descifrado: " + descifrado);
     }
 }
