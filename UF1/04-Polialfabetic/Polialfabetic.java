@@ -1,9 +1,9 @@
-/* Programa que cifrara y desfirara teniendo como referencia un alfabeto aleatorio generado por un modulo */
+/* Xifratge que generara 1 alfabet diferent per cada lletra del missatge amb una llavor clau */
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Monoalfabetic {
+public class Polialfabetic {
     public static final char[] MAY = "ABCÇDEFGHIJKLMÑOPQRSTUVWXYZÀÈÉÍÒÓÚÄËÏÖÜ".toCharArray();
     public static final char[] RANDOM = new char[MAY.length];
 
