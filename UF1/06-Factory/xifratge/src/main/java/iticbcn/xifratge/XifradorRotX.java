@@ -3,6 +3,12 @@
 package iticbcn.xifratge;
 
 public class XifradorRotX implements Xifrador {
+    private String msg = "";
+    private int rot = 0;
+    public XifradorRotX(String msg, int rot){
+        this.msg = msg;
+        this.rot = rot;
+    }
     public final char[] MAY = "ABCÇDEFGHIJKLMÑOPQRSTUVWXYZÀÈÉÍÒÓÚÄËÏÖÜ".toCharArray();
     public final char[] MIN = "abcçdefghijklmñopqrstuvwxyzàèéíòóúäëïöü".toCharArray();
 

@@ -6,8 +6,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class XifradorMonoalfabetic implements Xifrador {
+    private String mgs = "";
     public final char[] MAY = "ABCÇDEFGHIJKLMÑOPQRSTUVWXYZÀÈÉÍÒÓÚÄËÏÖÜ".toCharArray();
     public final char[] RANDOM = new char[MAY.length];
+
+    public XifradorMonoalfabetic(String msg) {
+        this.mgs = msg;
+    }
 
     // Metode que generar la permutacio del alfabet
     public char[] permutaAlfabet(char[] alfabet, char[] alfaRandom) {

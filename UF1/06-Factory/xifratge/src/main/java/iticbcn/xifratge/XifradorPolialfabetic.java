@@ -7,6 +7,11 @@ import java.util.Collections;
 import java.util.Random;
 
 public class XifradorPolialfabetic implements Xifrador {
+    private String msg = "";
+    public XifradorPolialfabetic(String msg){
+        this.msg = msg;
+    }
+
     public final char[] MAY = "ABCÇDEFGHIJKLMÑOPQRSTUVWXYZÀÈÉÍÒÓÚÄËÏÖÜ".toCharArray();
     public final char[] RANDOM = new char[MAY.length];
     public final int clau = 0; // Se tiene que ingresar una clave

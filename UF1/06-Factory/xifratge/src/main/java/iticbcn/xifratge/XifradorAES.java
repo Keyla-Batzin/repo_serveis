@@ -10,13 +10,18 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class XifradorAES implements Xifrador {
+    private String msg = "";
+    private String clau = ""; // Clave de 16 caracteres que se pide
+    public XifradorAES(String msg, String clau){
+        this.msg = msg;
+        this.clau = clau;
+    }
     public final String ALGORISME_XIFRAT = "AES";
     public final String ALGORISME_HASH = "SHA-256";
     public final String FORMAT_AES = "AES/CBC/PKCS5Padding";
 
     private final int MIDA_IV = 16;
     private byte[] iv = new byte[MIDA_IV]; // Inicializa el IV con tamaño fijo
-    private final String CLAU = ""; // Clave de 16 caracteres que se pide
 
     public byte[] xifraAES(String msg, String clau) throws Exception {
         // Obtenir els bytes de l’String
