@@ -1,4 +1,3 @@
-
 import java.security.MessageDigest;
 import java.util.Arrays;
 
@@ -12,48 +11,50 @@ public class AES {
     public static final String FORMAT_AES = "AES/CBC/PKCS5Padding";
 
     private static final int MIDA_IV = 16;
-    private static byte[] iv = new byte[MIDA_IV];
-    private static final String CLAU = "ClaveSecreta1234";
+    private static byte[] iv = new byte[MIDA_IV];  // Inicializa el IV con tamaño fijo
+    private static final String CLAU = "ClaveSecreta1234";  // Clave de 16 caracteres
 
     public static byte[] xifraAES(String msg, String clau) throws Exception {
         // Obtenir els bytes de l’String
         byte[] msgEnBytes = msg.getBytes("UTF-8"); // Array de bytes del String msg
 
-        // Genera IvParameterSpec
+        // Genera IvParameterSpec (Aquí simulamos que el IV es fijo, pero debería generarse aleatoriamente)
         IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
 
-        // Genera hash
-        MessageDigest hash = MessageDigest.getInstance(ALGORISME_HASH); // Creamos un hash
-        byte[] clauBytes = Arrays.copyOf(hash.digest(clau.getBytes("UTF-8")),MIDA_IV); // Genera un array de bytes de tamaño MIDA_IV a partir del hash de la cadena clau codificada en UTF-8
-        SecretKeySpec sks = new SecretKeySpec(clauBytes, ALGORISME_XIFRAT); // Crea una clave secreta para el algoritmo de cifrado especificado usando byte[] clauBytes.
+        // Genera hash de la clau usando SHA-256 y toma los primeros 16 bytes para la clau
+        MessageDigest sha = MessageDigest.getInstance(ALGORISME_HASH);
+        byte[] clauBytes = Arrays.copyOf(sha.digest(clau.getBytes("UTF-8")), 16);  // Solo los primeros 16 bytes
+        SecretKeySpec sks = new SecretKeySpec(clauBytes, ALGORISME_XIFRAT);
 
         // Encrypt.
         Cipher cipher = Cipher.getInstance(FORMAT_AES);
         cipher.init(Cipher.ENCRYPT_MODE, sks, ivParameterSpec);
 
-        // Combinar IV i part xifrada.
-       
+        // Combinar IV i part xifrada (en este caso no lo combinamos en la salida, ya que el IV es fijo).
+        byte[] encriptado = cipher.doFinal(msgEnBytes);
 
-        // return iv+msgxifrat
-        return ;
+        // return msgxifrat
+        return encriptado;
     }
 
     public static String desxifraAES(byte[] bIvIMsgXifrat, String clau) throws Exception {
 
-        // Extreure l'IV.
-        Cipher cipher = Cipher.getInstance(FORMAT_AES);
+        // Extreure l'IV (en este caso no es necesario extraerlo porque es fijo)
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
 
-        // Extreure la part xifrada.
-        SecretKeySpec sks = new SecretKeySpec(CLAU.getBytes("UTF-8"), ALGORISME_XIFRAT);
-
-        // Fer hash de la clau
-        cipher.init(Cipher.DECRYPT_MODE ,sks, new IvParameterSpec(iv));
+        // Genera hash de la clau usando SHA-256 y toma los primeros 16 bytes para la clau
+        MessageDigest sha = MessageDigest.getInstance(ALGORISME_HASH);
+        byte[] clauBytes = Arrays.copyOf(sha.digest(clau.getBytes("UTF-8")), 16);
+        SecretKeySpec sks = new SecretKeySpec(clauBytes, ALGORISME_XIFRAT);
 
         // Desxifrar.
+        Cipher cipher = Cipher.getInstance(FORMAT_AES);
+        cipher.init(Cipher.DECRYPT_MODE, sks, ivParameterSpec);
+
         byte[] descifrado = cipher.doFinal(bIvIMsgXifrat);
 
         // return String desxifrat
-        return descifrado.toString();
+        return new String(descifrado, "UTF-8");
     }
 
     public static void main(String[] args) {
@@ -70,14 +71,12 @@ public class AES {
                 bXifrats = xifraAES(msg, CLAU);
                 desxifrat = desxifraAES(bXifrats, CLAU);
             } catch (Exception e) {
-                System.err.println("Error de xifrat: "
-                        + e.getLocalizedMessage());
+                System.err.println("Error de xifrat: " + e.getLocalizedMessage());
             }
             System.out.println("--------------------");
             System.out.println("Msg: " + msg);
-            System.out.println("Enc: " + new String(bXifrats));
+            System.out.println("Enc: " + new String(bXifrats)); // Nota: puede haber caracteres no imprimibles
             System.out.println("DEC: " + desxifrat);
         }
     }
-
 }
