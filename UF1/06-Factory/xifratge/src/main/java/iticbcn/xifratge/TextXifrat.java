@@ -1,13 +1,18 @@
-/* Classe que sobreescrigui el mètode public String toString() i 
-implemente public byte[] getBytes(). També ha de tenir un constructor amb un array de bytes. */
-
 package iticbcn.xifratge;
 
 public class TextXifrat {
-    @Override
-    public String toString() {
-        return "TextXifrat []";
+    private byte[] text;
+
+    public TextXifrat(byte[] text) {
+        this.text = text;
     }
 
-    //public byte[] getBytes(){}
+    public byte[] getBytes() {
+        return this.text;
+    }
+
+    @Override
+    public String toString() {
+        return new String(this.text);
+    }
 }

@@ -1,5 +1,3 @@
-/* Programa que cifrara y desfirara teniendo como referencia un alfabeto aleatorio generado por un modulo */
-
 package iticbcn.xifratge;
 
 import java.util.ArrayList;
@@ -14,7 +12,7 @@ public class XifradorMonoalfabetic implements Xifrador {
         this.mgs = msg;
     }
 
-    // Metode que generar la permutacio del alfabet
+    // Método que genera la permutación del alfabeto
     public char[] permutaAlfabet(char[] alfabet, char[] alfaRandom) {
         ArrayList<Character> lista = anadirLetras(alfabet);
         Collections.shuffle(lista);
@@ -25,13 +23,19 @@ public class XifradorMonoalfabetic implements Xifrador {
         return alfaRandom;
     }
 
-    // Metode que xifrara
-    public String xifraMonoAlfa(String cadena) {
+    // Método que cifra
+    public String xifraMonoAlfa(String cadena, String clau) throws ClauNoSuportada {
+        if (clau == null) {
+            throw new ClauNoSuportada("La clau no pot ser null");
+        }
         return procesa(cadena, true);
     }
 
-    // Metode que desxifrara
-    public String desxifraMonoAlfa(String cadena) {
+    // Método que descifra
+    public String desxifraMonoAlfa(String cadena, String clau) throws ClauNoSuportada {
+        if (clau == null) {
+            throw new ClauNoSuportada("La clau no pot ser null");
+        }
         return procesa(cadena, false);
     }
 
@@ -56,7 +60,7 @@ public class XifradorMonoalfabetic implements Xifrador {
         return resultado.toString();
     }
 
-    // Metodo que añade las letras del alfabeto MAY a un ArrayList<Character>
+    // Método que añade las letras del alfabeto MAY a un ArrayList<Character>
     public ArrayList<Character> anadirLetras(char[] alfabeto) {
         ArrayList<Character> list = new ArrayList<Character>();
         for (int i = 0; i < alfabeto.length; i++) {
@@ -65,8 +69,7 @@ public class XifradorMonoalfabetic implements Xifrador {
         return list;
     }
 
-    // Busca la posicion en el alfabeto MAY y despues busca la misma posicion el el
-    // alfabeto Random
+    // Busca la posición en el alfabeto MAY y luego busca la misma posición en el alfabeto RANDOM
     public char posicion(char letra, char[] dicionario, char[] otroDicionario) {
         int posicion = 0;
         for (int i = 0; i < dicionario.length; i++) {
@@ -82,12 +85,13 @@ public class XifradorMonoalfabetic implements Xifrador {
     }
 
     @Override
-    public TextXifrat xifra(String msg, String clau) {
-        throw new UnsupportedOperationException("Unimplemented method 'xifra'");
+    public TextXifrat xifra(String msg) throws ClauNoSuportada{
+        xifraMonoAlfa(msg, msg);
+        return;
     }
 
     @Override
-    public String desxifra(TextXifrat xifrat, String clau) throws ClauNoSuportada {
-        throw new UnsupportedOperationException("Unimplemented method 'desxifra'");
+    public String desxifra() throws ClauNoSuportada{
+        return TextXifrat();
     }
 }
