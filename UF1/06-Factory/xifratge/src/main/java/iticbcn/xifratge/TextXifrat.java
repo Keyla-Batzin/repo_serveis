@@ -13,6 +13,6 @@ public class TextXifrat {
 
     @Override
     public String toString() {
-        return new String(this.text);
+        return new String(text);
     }
 }

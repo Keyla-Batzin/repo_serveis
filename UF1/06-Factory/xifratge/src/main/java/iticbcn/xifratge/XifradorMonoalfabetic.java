@@ -8,10 +8,6 @@ public class XifradorMonoalfabetic implements Xifrador {
     public final char[] MAY = "ABCÇDEFGHIJKLMÑOPQRSTUVWXYZÀÈÉÍÒÓÚÄËÏÖÜ".toCharArray();
     public final char[] RANDOM = new char[MAY.length];
 
-    public XifradorMonoalfabetic(String msg) {
-        this.mgs = msg;
-    }
-
     // Método que genera la permutación del alfabeto
     public char[] permutaAlfabet(char[] alfabet, char[] alfaRandom) {
         ArrayList<Character> lista = anadirLetras(alfabet);
@@ -69,7 +65,8 @@ public class XifradorMonoalfabetic implements Xifrador {
         return list;
     }
 
-    // Busca la posición en el alfabeto MAY y luego busca la misma posición en el alfabeto RANDOM
+    // Busca la posición en el alfabeto MAY y luego busca la misma posición en el
+    // alfabeto RANDOM
     public char posicion(char letra, char[] dicionario, char[] otroDicionario) {
         int posicion = 0;
         for (int i = 0; i < dicionario.length; i++) {
@@ -85,13 +82,21 @@ public class XifradorMonoalfabetic implements Xifrador {
     }
 
     @Override
-    public TextXifrat xifra(String msg) throws ClauNoSuportada{
-        xifraMonoAlfa(msg, msg);
-        return;
+    public TextXifrat xifra(String msg, String clau) throws ClauNoSuportada {
+        if (clau == null) {
+            throw new ClauNoSuportada("La clau no pot ser null");
+        }
+        String xifrat = xifraMonoAlfa(msg, clau);
+        return new TextXifrat(xifrat.getBytes());
     }
 
     @Override
-    public String desxifra() throws ClauNoSuportada{
-        return TextXifrat();
+    public String desxifra(TextXifrat xifrat, String clau) throws ClauNoSuportada {
+        if (clau == null) {
+            throw new ClauNoSuportada("La clau no pot ser null");
+        }
+        String msgDesxifrat = desxifraMonoAlfa(xifrat.toString(), clau);
+        return msgDesxifrat;
     }
+
 }

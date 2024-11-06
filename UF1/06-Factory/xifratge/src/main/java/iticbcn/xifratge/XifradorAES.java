@@ -1,100 +1,87 @@
 package iticbcn.xifratge;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
+import java.security.MessageDigest;
+import java.util.Arrays;
 
-public class XifradorPolialfabetic implements Xifrador {
-    private String msg = "";
-    public final char[] MAY = "ABCÇDEFGHIJKLMÑOPQRSTUVWXYZÀÈÉÍÒÓÚÄËÏÖÜ".toCharArray();
-    public final char[] RANDOM = new char[MAY.length];
-    public long clau = 0; // Clave como long
-    public final Random intRandom = new Random();
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
-    public XifradorPolialfabetic(String msg, String clau) throws ClauNoSuportada {
-        this.msg = msg;
-        // Intentamos convertir la clave a long
+public class XifradorAES implements Xifrador {
+
+    public static final String ALGORISME_XIFRAT = "AES";
+    public static final String ALGORISME_HASH = "SHA-256";
+    public static final String FORMAT_AES = "AES/CBC/PKCS5Padding";
+
+    private static final int MIDA_IV = 16;
+    private static byte[] iv = new byte[MIDA_IV]; // Inicializa el IV con tamaño fijo
+    private static final String CLAU = "ClaveSecreta1234"; // Clave de 16 caracteres
+
+    public static byte[] xifraAES(String msg, String clau) throws Exception {
+        // Obtenir els bytes de l’String
+        byte[] msgEnBytes = msg.getBytes("UTF-8"); // Array de bytes del String msg
+
+        // Genera IvParameterSpec (Aquí simulamos que el IV es fijo, pero debería
+        // generarse aleatoriamente)
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+
+        // Genera hash de la clau usando SHA-256 y toma los primeros 16 bytes para la
+        // clau
+        MessageDigest sha = MessageDigest.getInstance(ALGORISME_HASH);
+        byte[] clauBytes = Arrays.copyOf(sha.digest(clau.getBytes("UTF-8")), 16); // Solo los primeros 16 bytes
+        SecretKeySpec sks = new SecretKeySpec(clauBytes, ALGORISME_XIFRAT);
+
+        // Encrypt.
+        Cipher cipher = Cipher.getInstance(FORMAT_AES);
+        cipher.init(Cipher.ENCRYPT_MODE, sks, ivParameterSpec);
+
+        // Combinar IV i part xifrada (en este caso no lo combinamos en la salida, ya
+        // que el IV es fijo).
+        byte[] encriptado = cipher.doFinal(msgEnBytes);
+
+        // return msgxifrat
+        return encriptado;
+    }
+
+    public static String desxifraAES(byte[] bIvIMsgXifrat, String clau) throws Exception {
+
+        // Extreure l'IV (en este caso no es necesario extraerlo porque es fijo)
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+
+        // Genera hash de la clau usando SHA-256 y toma los primeros 16 bytes para la
+        // clau
+        MessageDigest sha = MessageDigest.getInstance(ALGORISME_HASH);
+        byte[] clauBytes = Arrays.copyOf(sha.digest(clau.getBytes("UTF-8")), 16);
+        SecretKeySpec sks = new SecretKeySpec(clauBytes, ALGORISME_XIFRAT);
+
+        // Desxifrar.
+        Cipher cipher = Cipher.getInstance(FORMAT_AES);
+        cipher.init(Cipher.DECRYPT_MODE, sks, ivParameterSpec);
+
+        byte[] descifrado = cipher.doFinal(bIvIMsgXifrat);
+
+        // return String desxifrat
+        return new String(descifrado, "UTF-8");
+    }
+
+    @Override
+    public TextXifrat xifra(String msg, String clau) throws ClauNoSuportada {
         try {
-            this.clau = Long.parseLong(clau);
-        } catch (NumberFormatException e) {
-            // Si la conversión falla, lanzamos una excepción
-            throw new ClauNoSuportada("La clau no és vàlida: " + clau);
+            byte[] xifratBytes = xifraAES(msg, clau);
+            return new TextXifrat(xifratBytes);
+        } catch (Exception e) {
+            throw new ClauNoSuportada("Error en el proceso de cifrado: " + e.getMessage());
         }
     }
 
-    // Inicializamos el Random con la clave antes del cifrado y descifrado
-    private void initRandom() {
-        intRandom.setSeed(clau);  // Establecemos la semilla para la aleatoriedad
-    }
-
-    // Método que genera la permutación del alfabeto
-    public char[] permutaAlfabet(char[] alfabet, char[] alfaRandom) {
-        ArrayList<Character> lista = anadirLetras(alfabet);
-        Collections.shuffle(lista, intRandom);  // Aleatorizamos usando la semilla
-        for (int i = 0; i < alfaRandom.length; i++) {
-            char letra = lista.get(i);
-            alfaRandom[i] = letra;
+    @Override
+    public String desxifra(TextXifrat xifrat, String clau) throws ClauNoSuportada {
+        try {
+            byte[] xifratBytes = xifrat.getBytes(); // Obtener el array de bytes desde TextXifrat
+            return desxifraAES(xifratBytes, clau);
+        } catch (Exception e) {
+            throw new ClauNoSuportada("Error en el proceso de descifrado: " + e.getMessage());
         }
-        return alfaRandom;
-    }
-
-    // Método que cifra
-    public String xifraPoliAlfa(String cadena) {
-        initRandom();  // Inicializamos el Random antes de cifrar
-        return procesa(cadena, true);
-    }
-
-    // Método que descifra
-    public String desxifraPoliAlfa(String cadena) {
-        initRandom();  // Inicializamos el Random antes de descifrar
-        return procesa(cadena, false);
-    }
-
-    public String procesa(String cadena, boolean x) {
-        StringBuilder resultado = new StringBuilder();
-        for (int i = 0; i < cadena.length(); i++) {
-            permutaAlfabet(MAY, RANDOM);  // Generamos un alfabeto aleatorio para cada letra
-            char l = cadena.charAt(i);  // Letra
-            if (!Character.isLetter(l)) {
-                resultado.append(l);  // Si no es letra, la agregamos tal cual
-            } else {
-                if (Character.isLowerCase(l)) {
-                    l = Character.toUpperCase(l);  // Convertimos a mayúscula
-                    l = verifica(x, l);  // Aplicamos la permutación
-                    l = Character.toLowerCase(l);  // Convertimos de nuevo a minúscula
-                    resultado.append(l);
-                } else if (Character.isUpperCase(l)) {
-                    l = verifica(x, l);  // Aplicamos la permutación
-                    resultado.append(l);
-                }
-            }
-        }
-        return resultado.toString();
-    }
-
-    // Método que añade las letras del alfabeto MAY a un ArrayList<Character>
-    public ArrayList<Character> anadirLetras(char[] alfabeto) {
-        ArrayList<Character> list = new ArrayList<>();
-        for (int i = 0; i < alfabeto.length; i++) {
-            list.add(alfabeto[i]);
-        }
-        return list;
-    }
-
-    // Busca la posición en el alfabeto MAY y después busca la misma posición en el alfabeto Random
-    public char posicion(char letra, char[] dicionario, char[] otroDicionario) {
-        int posicion = 0;
-        for (int i = 0; i < dicionario.length; i++) {
-            if (letra == dicionario[i]) {
-                posicion = i;
-                break;
-            }
-        }
-        return otroDicionario[posicion];
-    }
-
-    public char verifica(boolean x, char l) {
-        return (x) ? posicion(l, MAY, RANDOM) : posicion(l, RANDOM, MAY);
     }
 
 }

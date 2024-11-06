@@ -5,10 +5,7 @@ package iticbcn.xifratge;
 public class XifradorRotX implements Xifrador {
     private String msg = "";
     private int rot = 0;
-    public XifradorRotX(String msg, int rot){
-        this.msg = msg;
-        this.rot = rot;
-    }
+
     public final char[] MAY = "ABCÇDEFGHIJKLMÑOPQRSTUVWXYZÀÈÉÍÒÓÚÄËÏÖÜ".toCharArray();
     public final char[] MIN = "abcçdefghijklmñopqrstuvwxyzàèéíòóúäëïöü".toCharArray();
 
@@ -63,12 +60,34 @@ public class XifradorRotX implements Xifrador {
     }
 
     @Override
-    public TextXifrat xifra(String msg, String clau) {
-        throw new UnsupportedOperationException("Unimplemented method 'xifra'");
+    public TextXifrat xifra(String msg, String clau) throws ClauNoSuportada {
+        try {
+            // Intentar convertir la clave en un número para usarla como desplazamiento (rotación)
+            rot = Integer.parseInt(clau);
+        } catch (NumberFormatException e) {
+            throw new ClauNoSuportada("La clau ha de ser un número per a la rotació.");
+        }
+
+        // Aplicar el cifrado de rotación
+        String xifrat = xifraRotX(msg, rot);
+
+        // Retornar el mensaje cifrado como un TextXifrat
+        return new TextXifrat(xifrat.getBytes());
     }
 
     @Override
     public String desxifra(TextXifrat xifrat, String clau) throws ClauNoSuportada {
-        throw new UnsupportedOperationException("Unimplemented method 'desxifra'");
+        try {
+            // Intentar convertir la clave en un número para usarla como desplazamiento (rotación)
+            rot = Integer.parseInt(clau);
+        } catch (NumberFormatException e) {
+            throw new ClauNoSuportada("La clau ha de ser un número per a la rotació.");
+        }
+
+        // Convertir el texto cifrado a cadena de texto
+        String msgCifrat = new String(xifrat.getBytes());
+
+        // Aplicar el descifrado de rotación y retornar el resultado
+        return desxifraRotX(msgCifrat, rot);
     }
 }

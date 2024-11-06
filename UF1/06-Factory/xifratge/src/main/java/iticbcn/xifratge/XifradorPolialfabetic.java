@@ -11,16 +11,6 @@ public class XifradorPolialfabetic implements Xifrador {
     public long clau = 0; // Clave como long
     public final Random intRandom = new Random();
 
-    public XifradorPolialfabetic(String msg, String clau) throws ClauNoSuportada {
-        this.msg = msg;
-        // Intentamos convertir la clave a long
-        try {
-            this.clau = Long.parseLong(clau);
-        } catch (NumberFormatException e) {
-            // Si la conversión falla, lanzamos una excepción
-            throw new ClauNoSuportada("La clau no és vàlida: " + clau);
-        }
-    }
 
     public void initRandom() {
         intRandom.setSeed(clau);  // Establecemos la semilla para la aleatoriedad
@@ -95,12 +85,40 @@ public class XifradorPolialfabetic implements Xifrador {
     }
 
     @Override
-    public TextXifrat xifra(String msg, String clau) {
-        throw new UnsupportedOperationException("Unimplemented method 'xifra'");
+    public TextXifrat xifra(String msg, String clau) throws ClauNoSuportada {
+        try {
+            // Convertimos la clave en long para usarla como semilla
+            this.clau = Long.parseLong(clau);
+        } catch (NumberFormatException e) {
+            throw new ClauNoSuportada("La clau ha de ser un nombre vàlid.");
+        }
+
+        // Inicializamos la semilla para la aleatoriedad
+        initRandom();
+
+        // Ciframos el mensaje usando el método polialfabético
+        String xifrat = xifraPoliAlfa(msg);
+
+        // Retornamos el mensaje cifrado en un objeto TextXifrat
+        return new TextXifrat(xifrat.getBytes());
     }
 
     @Override
     public String desxifra(TextXifrat xifrat, String clau) throws ClauNoSuportada {
-        throw new UnsupportedOperationException("Unimplemented method 'desxifra'");
+        try {
+            // Convertimos la clave en long para usarla como semilla
+            this.clau = Long.parseLong(clau);
+        } catch (NumberFormatException e) {
+            throw new ClauNoSuportada("La clau ha de ser un nombre vàlid.");
+        }
+
+        // Inicializamos la semilla para que el descifrado sea igual al cifrado
+        initRandom();
+
+        // Convertimos el texto cifrado a cadena de texto
+        String msgCifrat = new String(xifrat.getBytes());
+
+        // Desciframos el mensaje
+        return desxifraPoliAlfa(msgCifrat);
     }
 }
