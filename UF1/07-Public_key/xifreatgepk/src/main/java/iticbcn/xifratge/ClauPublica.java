@@ -5,28 +5,30 @@ import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
+import javax.crypto.Cipher;
+
 public class ClauPublica {
+
     public KeyPair generaParellClausRSA() throws Exception {
         KeyPairGenerator key = KeyPairGenerator.getInstance("RSA");
-
         // Especificamos el tamaño de la llave en bits
         key.initialize(2048);
-
         // Generamos el par de llaves que se almacenan en el objeto KeyPair
         KeyPair keyPair = key.generateKeyPair();
-        // Obtenemos ambas llaves por separado
-        PublicKey publicKey = keyPair.getPublic();
-        PrivateKey privateKey = keyPair.getPrivate();
-
         return keyPair;
     }
 
     public byte[] xifraRSA(String msg, PublicKey clauPublica) throws Exception {
-        byte[] x = new byte[0];
-        return x;
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.ENCRYPT_MODE, clauPublica);
+        byte[] xifrat =  cipher.doFinal(msg.getBytes());
+        return xifrat;
     }
 
-    public String desxifraRSA(byte[] msgXifrat, PrivateKey ClauPrivada) {
-        return new String();
+    public String desxifraRSA(byte[] msgXifrat, PrivateKey clauPrivada) throws Exception{
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.DECRYPT_MODE, clauPrivada);
+        byte[] desxifratByte = cipher.doFinal(msgXifrat);
+        return new String(desxifratByte);
     }
 }
