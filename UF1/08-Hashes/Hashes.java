@@ -123,9 +123,15 @@ public class Hashes {
 
     // Método para obtener el intervalo de tiempo entre dos puntos
     public String getInterval(long t1, long t2) {
-        long diff = t2 - t1;
-        long seconds = diff / 1000;
-        long milliseconds = diff % 1000;
-        return String.format("%d.%03d seconds", seconds, milliseconds);
+        long mili = t2 - t1;
+        long segundos = mili / 1000;
+        long minutos = segundos / 60;
+        long horas = minutos / 60;
+        long dias = horas / 24;
+        mili %= 1000;
+        segundos %= 60;
+        minutos %= 60;
+        horas %= 24;
+        return String.format("%d dies / %d hores / %d minuts / %dsegons / %d mili", dias, horas, minutos, segundos, mili);
     }
 }
